@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 96%;
+
+    --card: 0 0% 2%;
+    --card-foreground: 0 0% 96%;
+
+    /* Gemini purple → blue gradient for primary/buttons */
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 6%;
+    --secondary-foreground: 0 0% 94%;
+
+    /* Cyan neon accent for interactive elements */
+    --accent: 186 100% 50%;
+    --accent-foreground: 0 0% 0%;
+
+    --muted: 0 0% 6%;
+    --muted-foreground: 0 0% 45%;
+
+    --border: 0 0% 10%;
+    --input: 0 0% 10%;
+    --ring: 262 83% 58%;
+
+    --surface-1: 0 0% 2%;
+    --surface-2: 0 0% 4%;
+    --surface-3: 0 0% 6%;
+
+    /* Gemini purple */
+    --brand-50: 262 85% 92%;
+    --brand-100: 262 80% 82%;
+    --brand-200: 262 82% 70%;
+    --brand-300: 262 83% 58%;
+    --brand-400: 262 85% 46%;
+    --brand-500: 262 88% 34%;
+    --brand-600: 262 90% 22%;
+    --brand-700: 262 92% 12%;
+
+    /* Cyan neon */
+    --cyan-400: 186 100% 50%;
+    --cyan-300: 186 100% 60%;
+
+    --radius: 1rem;
+    --font-sans: "Inter", "SF Pro Display", "system-ui", sans-serif;
+    --font-mono: "JetBrains Mono", "SF Mono", "ui-monospace", monospace;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.25);
+    color: hsl(var(--foreground));
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .moonlight {
+    background: radial-gradient(ellipse 70% 35% at 50% -8%, rgba(100, 80, 255, 0.06), transparent);
+  }
+
+  @keyframes gradient-flow {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .text-gradient {
+    background: linear-gradient(
+      270deg,
+      hsl(262 83% 58%),
+      hsl(210 100% 55%),
+      hsl(262 83% 58%),
+      hsl(186 100% 50%),
+      hsl(262 83% 58%)
+    );
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-flow 6s ease infinite;
+  }
+}
