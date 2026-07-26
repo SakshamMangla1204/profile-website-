@@ -92,7 +92,11 @@ export function PersonalJourneySection() {
                     <Briefcase className="h-4 w-4 text-brand-300" />
                   </div>
 
-                  <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 hover:border-white/[0.10] transition-colors">
+                  <div className="group relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 backdrop-blur-sm transition-all duration-300 hover:border-white/[0.12] hover:bg-white/[0.03] hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)]">
+                    {/* Subtle gradient overlay */}
+                    <div className="absolute inset-0 rounded-xl bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.06),transparent_40%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                    
+                    <div className="relative z-10">
                     <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
                       <div>
                         <h3 className="text-base font-medium text-white">
@@ -110,6 +114,7 @@ export function PersonalJourneySection() {
                     <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                       {exp.description}
                     </p>
+                    </div>
                   </div>
                 </motion.div>
               ))}

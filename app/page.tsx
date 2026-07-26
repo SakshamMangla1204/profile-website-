@@ -7,6 +7,8 @@ import { PersonalJourneySection } from "@/sections/personal-journey-section";
 import { PhilosophySection } from "@/sections/philosophy-section";
 import { TechnologyStackSection } from "@/sections/technology-stack-section";
 import { WhatImBuildingSection } from "@/sections/what-im-building-section";
+import { CertificationsSection } from "@/sections/certifications-section";
+import { MilestonesSection } from "@/sections/milestones-section";
 
 export default function HomePage() {
   return (
@@ -18,6 +20,8 @@ export default function HomePage() {
       <PhilosophySection />
       <TechnologyStackSection />
       <PersonalJourneySection />
+      <CertificationsSection />
+      <MilestonesSection />
       <ContactSection />
       <SiteFooter />
     </main>

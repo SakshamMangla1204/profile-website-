@@ -93,27 +93,32 @@ export function WhatImBuildingSection() {
                 <motion.div
                   key={project.title}
                   variants={itemVariants}
-                  className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 hover:border-white/[0.10] transition-colors group"
+                  className="group relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 backdrop-blur-sm transition-all duration-300 hover:border-white/[0.12] hover:bg-white/[0.03] hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)]"
                 >
-                  <div className="flex items-center justify-between mb-3">
-                    <Icon className="h-5 w-5 text-brand-300" />
-                    <span className="text-[10px] uppercase tracking-wider text-cyan-400/70 font-medium">
-                      {project.status}
-                    </span>
-                  </div>
-                  <h3 className="text-sm font-medium text-white">{project.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {project.description}
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-1.5">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-0.5 text-[10px] text-muted-foreground"
-                      >
-                        {tag}
+                  {/* Subtle gradient overlay */}
+                  <div className="absolute inset-0 rounded-xl bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.06),transparent_40%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-3">
+                      <Icon className="h-5 w-5 text-brand-300" />
+                      <span className="text-[10px] uppercase tracking-wider text-cyan-400/70 font-medium">
+                        {project.status}
                       </span>
-                    ))}
+                    </div>
+                    <h3 className="text-sm font-medium text-white">{project.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {project.description}
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-1.5">
+                      {project.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-0.5 text-[10px] text-muted-foreground"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </motion.div>
               );

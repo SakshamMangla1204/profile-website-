@@ -101,7 +101,7 @@ export function ContactSection() {
 
           <motion.h2
             variants={itemVariants}
-            className="text-display-sm font-semibold text-gradient text-center md:text-display-md"
+            className="text-display-sm font-semibold text-white text-center md:text-display-md"
           >
             Let's Build Together
           </motion.h2>

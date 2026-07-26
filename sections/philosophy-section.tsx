@@ -59,44 +59,54 @@ export function PhilosophySection() {
 
           <div className="mt-10 grid gap-6 md:grid-cols-2">
             <motion.div
-              className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6"
+              className="group relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-sm transition-all duration-300 hover:border-white/[0.12] hover:bg-white/[0.03] hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)]"
               initial={{ opacity: 0, x: -12 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.45, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h3 className="text-sm font-medium text-white">
-                Why Agentic AI is the next chapter
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Traditional software waits for explicit input and follows
-                predefined paths. Agentic AI changes that model by enabling
-                software to interpret intent, gather context, reason across
-                multiple steps, and take action with the right tools at the
-                right time.
-              </p>
+              {/* Subtle gradient overlay */}
+              <div className="absolute inset-0 rounded-xl bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.06),transparent_40%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              
+              <div className="relative z-10">
+                <h3 className="text-sm font-medium text-white">
+                  Why Agentic AI is the next chapter
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  Traditional software waits for explicit input and follows
+                  predefined paths. Agentic AI changes that model by enabling
+                  software to interpret intent, gather context, reason across
+                  multiple steps, and take action with the right tools at the
+                  right time.
+                </p>
+              </div>
             </motion.div>
 
             <motion.div
-              className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6"
+              className="group relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-sm transition-all duration-300 hover:border-white/[0.12] hover:bg-white/[0.03] hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)]"
               initial={{ opacity: 0, x: 12 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.45, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
-                <p>
-                  That shift matters because the products people need are no
-                  longer just interfaces for commands. They are intelligent
-                  systems that can support decisions, automate operations, and
-                  complete complex work with greater autonomy.
-                </p>
-                <p>
-                  The future is combining robust architecture, orchestration,
-                  memory, retrieval, and reasoning into products that behave
-                  less like static applications and more like capable
-                  collaborators.
-                </p>
+              {/* Subtle gradient overlay */}
+              <div className="absolute inset-0 rounded-xl bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.06),transparent_40%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              
+              <div className="relative z-10">
+                <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+                  <p>
+                    That shift matters because the products people need are no
+                    longer just interfaces for commands. They are intelligent
+                    systems that can support decisions, automate operations, and
+                    complete complex work with greater autonomy.
+                  </p>
+                  <p>
+                    The future is combining robust architecture, orchestration,
+                    memory, retrieval, and reasoning into products that behave
+                    less like static applications and more like capable
+                    collaborators.
+                  </p>
+                </div>
               </div>
             </motion.div>
           </div>

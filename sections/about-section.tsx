@@ -88,13 +88,18 @@ export function AboutSection() {
                 <motion.div
                   key={area.title}
                   variants={itemVariants}
-                  className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 hover:border-white/[0.10] transition-colors"
+                  className="group relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 backdrop-blur-sm transition-all duration-300 hover:border-white/[0.12] hover:bg-white/[0.03] hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)]"
                 >
-                  <Icon className="h-5 w-5 text-brand-300 mb-3" />
-                  <h3 className="text-sm font-medium text-white">{area.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {area.description}
-                  </p>
+                  {/* Subtle gradient overlay */}
+                  <div className="absolute inset-0 rounded-xl bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.06),transparent_40%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  
+                  <div className="relative z-10">
+                    <Icon className="h-5 w-5 text-brand-300 mb-3" />
+                    <h3 className="text-sm font-medium text-white">{area.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {area.description}
+                    </p>
+                  </div>
                 </motion.div>
               );
             })}

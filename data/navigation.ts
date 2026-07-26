@@ -11,6 +11,7 @@ export const navigation = {
     { label: "Technology Stack", href: "#technology-stack" },
     { label: "Projects", href: "#projects" },
     { label: "Personal Journey", href: "#personal-journey" },
+    { label: "Certifications", href: "#certifications" },
     { label: "Blog", href: "#blog" },
     { label: "Contact", href: "#contact" },
   ] satisfies NavigationItem[],
