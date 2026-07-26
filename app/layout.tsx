@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import { siteConfig } from "@/data/site-config";
 import { SideAura } from "@/components/visuals/side-aura";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -38,6 +39,7 @@ export default function RootLayout({
         {/* Side particles */}
         <SideAura />
         <div className="relative z-10">{children}</div>
+        <Analytics />
       </body>
     </html>
   );
