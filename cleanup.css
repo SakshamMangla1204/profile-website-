@@ -1,0 +1,25 @@
+/* Neutral surface pass: cyan is reserved for emphasis, not backgrounds. */
+:root{--text:#fff;--text-dim:#e6e6e6;--text-faint:#b8b8b8;--accent:#4d8dff;--accent-2:#2f6fed;--accent-soft:rgba(77,141,255,.16);--accent-line:rgba(77,141,255,.46)}
+#nav,#nav.scrolled{background:rgba(3,3,3,.94)}
+.eyebrow,.proj-index,.principle .k,.stack-info .k,.nav-logo span,.node-label.active,.node-label:hover,.nav-links a:hover,.btn-secondary:hover,.contact-link:hover,.contact-link:hover .arrow{color:#fff}
+.btn-primary{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.btn-primary{background:#fff;color:#050505;text-shadow:none;border:1px solid #fff;box-shadow:0 12px 30px rgba(0,0,0,.38)}
+.btn-primary:hover{background:#ededed;border-color:#fff;box-shadow:0 16px 35px rgba(0,0,0,.48)}
+.eyebrow .ai-blue{color:#4d8dff}
+.nav-logo,.nav-logo span{color:#4d8dff;font-family:var(--sans);font-size:17px;font-weight:700;letter-spacing:.16em}
+.nav-status,.nav-toggle,.nav-links,.hero-canvas-wrap,.stack-wrap,.stack-info,.node-label,.node-label.center,.flow-node,.tag,.pipe-step,.principle{background-color:rgba(12,12,12,.94)}
+.hero-canvas-wrap{background:linear-gradient(145deg,#111 0%,#070707 100%)}
+.node-label.center{background-color:#151515}.nav-status,.btn-secondary{background-color:#111}
+.proj,.proj:hover{background:transparent}
+.principle:hover{background:#181818}
+.hero-canvas-wrap:after{background:linear-gradient(115deg,rgba(255,255,255,.045),transparent 32%,transparent 70%,rgba(255,255,255,.015))}
+.hero-canvas-wrap:hover{box-shadow:30px 42px 90px rgba(0,0,0,.68),0 0 28px rgba(77,141,255,.035)}
+
+/* Subtle dark glass surfaces */
+#nav,#nav.scrolled{background:rgba(3,3,3,.74);backdrop-filter:blur(22px) saturate(110%);-webkit-backdrop-filter:blur(22px) saturate(110%);box-shadow:inset 0 -1px rgba(255,255,255,.08)}
+.nav-status,.nav-toggle,.nav-links,.hero-canvas-wrap,.stack-wrap,.stack-info,.principles,.pipe-step{background-color:rgba(18,18,18,.62);backdrop-filter:blur(18px) saturate(105%);-webkit-backdrop-filter:blur(18px) saturate(105%);border-color:rgba(255,255,255,.14);box-shadow:inset 0 1px rgba(255,255,255,.09),0 18px 50px rgba(0,0,0,.26)}
+.hero-canvas-wrap{background:linear-gradient(145deg,rgba(28,28,28,.68),rgba(7,7,7,.76))}.hero-canvas-wrap:before{border-color:rgba(255,255,255,.12)}
+.principle{background:rgba(16,16,16,.72);box-shadow:inset 0 1px rgba(255,255,255,.045)}
+.flow-node,.tag,.node-label,.node-label.center{background:rgba(22,22,22,.65);border-color:rgba(255,255,255,.16);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.btn-secondary{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.18);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+@media (max-width:760px){.nav-links{border:0;background:rgba(10,10,10,.86);box-shadow:0 18px 42px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.035);backdrop-filter:blur(24px) saturate(110%);-webkit-backdrop-filter:blur(24px) saturate(110%)}}
