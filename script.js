@@ -8,8 +8,8 @@
   const setNav = () => nav.classList.toggle('scrolled', scrollY > 20);
   addEventListener('scroll', setNav, { passive: true }); setNav();
   if (toggle && links) {
-    const close = () => { links.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); toggle.setAttribute('aria-label', 'Open navigation'); };
-    toggle.addEventListener('click', () => { const open = links.classList.toggle('open'); toggle.setAttribute('aria-expanded', open); toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation'); });
+    const close = () => { links.classList.remove('open'); nav.classList.remove('menu-open'); toggle.setAttribute('aria-expanded', 'false'); toggle.setAttribute('aria-label', 'Open navigation'); };
+    toggle.addEventListener('click', () => { const open = links.classList.toggle('open'); nav.classList.toggle('menu-open', open); toggle.setAttribute('aria-expanded', open); toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation'); });
     $$('a', links).forEach(link => link.addEventListener('click', close));
     addEventListener('keydown', event => { if (event.key === 'Escape' && links.classList.contains('open')) { close(); toggle.focus(); } });
   }
@@ -27,6 +27,9 @@
   new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) { traits.forEach((trait, i) => setTimeout(() => trait.classList.add('on'), reduced ? 0 : i * 140)); } }), { threshold: .5 }).observe($('#trait-row'));
 
   if (!window.THREE) return;
+  // Control pointer-driven interactions separately for globe (hero) and stack (logo orbit)
+  const globeMouseEffects = true; // enable mouse interaction on the hero globe
+  const stackMouseEffects = false; // disable pointer interactions on the logo orbit
   const makeRenderer = (canvas, wrap, z) => { const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(50, 1, .1, 100), renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); camera.position.z = z; renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); const resize = () => { const w = wrap.clientWidth || 1, h = wrap.clientHeight || 1; camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h, false); }; resize(); addEventListener('resize', resize); if (window.ResizeObserver) new ResizeObserver(resize).observe(wrap); addEventListener('load', resize); requestAnimationFrame(resize); return { scene, camera, renderer, resize }; };
 
   const sphereCanvas = $('#sphere-canvas');
@@ -122,14 +125,16 @@
       mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
     };
-    wrap.addEventListener('mousemove', e => {
-      setPointer(e.clientX, e.clientY); hovering = true;
-      targetRotY = mouse.x * .35; targetRotX = mouse.y * .2;
-    });
-    wrap.addEventListener('mouseleave', () => { hovering = false; activeIndices.clear(); });
-    wrap.addEventListener('touchmove', e => {
-      if (e.touches[0]) { setPointer(e.touches[0].clientX, e.touches[0].clientY); hovering = true; }
-    }, { passive: true });
+    if (globeMouseEffects) {
+      wrap.addEventListener('mousemove', e => {
+        setPointer(e.clientX, e.clientY); hovering = true;
+        targetRotY = mouse.x * .35; targetRotX = mouse.y * .2;
+      });
+      wrap.addEventListener('mouseleave', () => { hovering = false; activeIndices.clear(); });
+      wrap.addEventListener('touchmove', e => {
+        if (e.touches[0]) { setPointer(e.touches[0].clientX, e.touches[0].clientY); hovering = true; }
+      }, { passive: true });
+    }
 
     let tick = 0;
     const animate = () => {
@@ -180,70 +185,102 @@
 
     if (stage && svg && nodesLayer && pulsesLayer && core) {
       const SKILLS = [
-        ['Agentic AI', 'Systems that plan, use tools, and act toward a goal.'],
-        ['Generative AI', 'Models that create text, images, and structured outputs.'],
-        ['LLMs', 'The reasoning core of modern AI systems.'],
-        ['RAG', 'Grounding outputs in retrieved, up-to-date knowledge.'],
-        ['Computer Vision', 'Models that understand visual data.'],
-        ['LangGraph', 'Orchestrating multi-step, stateful agent workflows.'],
-        ['Embeddings', 'Turning meaning into searchable vectors.'],
-        ['APIs', 'Connecting models, tools, and services.'],
-        ['AWS', 'Cloud infrastructure for AI systems.'],
-        ['Docker', 'Packaging systems to run consistently.'],
-        ['Vector Databases', 'Fast storage and retrieval for embeddings.'],
-        ['PyTorch', 'Training and fine-tuning deep learning models.'],
-        ['Python', 'The language connecting pipelines, models, and agents.']
+        { label: 'AI', icon: null, desc: 'The intelligence layer that brings models, data, and application logic together.', category: 'Core Intelligence', role: 'Transforms model capabilities into useful application behavior.' },
+        { label: 'LLMs', mark: 'LLM', desc: 'Large language models enable applications to understand instructions, generate responses, and work with contextual information.', category: 'Language and Reasoning', role: 'Provides language understanding and generation.' },
+        { label: 'RAG', mark: 'RAG', desc: 'Connect language models to relevant external information to produce responses grounded in retrieved context.', category: 'Retrieval and Context', role: 'Supplies up-to-date, relevant context to models.' },
+        { label: 'LangChain', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', desc: "Connect models, prompts, retrievers, tools, and external services into structured AI application workflows.", category: 'Orchestration', role: 'Orchestrates multi-step model interactions.' },
+        { label: 'LangGraph', mark: 'LG', desc: 'Build multi-step AI workflows with explicit control flow, persistent state, and support for human intervention.', category: 'Workflow Control', role: 'Manages stateful, auditable workflows.' },
+        { label: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', desc: 'The foundation for data processing, model integration, backend logic, automation, and AI application development.', category: 'Development', role: 'Primary development language and scripting.' },
+        { label: 'Computer Vision', mark: 'CV', desc: 'Extract meaningful information from images and video through visual recognition, classification, and image understanding.', category: 'Visual Intelligence', role: 'Transforms pixels into structured information.' },
+        { label: 'Vector DB', mark: 'VDB', desc: 'Store and search vector embeddings to retrieve semantically relevant information for knowledge-based AI applications.', category: 'Knowledge Retrieval', role: 'Provides semantic search for retrieval.' },
+        { label: 'AWS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg', desc: 'Use cloud infrastructure and managed services to run, integrate, and scale applications.', category: 'Cloud Infrastructure', role: 'Hosts, scales, and integrates services.' },
+        { label: 'Docker', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg', desc: 'Package applications and their dependencies into consistent environments for development and deployment.', category: 'Deployment', role: 'Ensures consistent runtime environments.' },
+        { label: 'PyTorch', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg', desc: 'Develop neural networks, experiment with machine learning models, and build model-powered applications.', category: 'Model Development', role: 'Framework for model development and experimentation.' },
+        { label: 'APIs', mark: '{}', desc: 'Connect AI capabilities with frontend interfaces, databases, external services, and other application components.', category: 'Integration', role: 'Exposes and composes system capabilities.' }
       ];
 
       const infoK = document.querySelector('#stack-info .k');
-      const infoV = document.querySelector('#stack-info .v');
+      const infoCategory = document.querySelector('#stack-info .category');
+      const infoDesc = document.querySelector('#stack-info .info-desc');
+      const infoRole = document.querySelector('#stack-info .info-role');
 
-      let cx = 0, cy = 0, radius = 0;
-      const nodeEls = [], lineEls = [], pulseEls = [];
+      const nodeEls = [];
 
       function build() {
-        nodesLayer.innerHTML = '';
         svg.innerHTML = '';
         pulsesLayer.innerHTML = '';
-        nodeEls.length = 0; lineEls.length = 0; pulseEls.length = 0;
+        nodeEls.length = 0;
+        nodesLayer.innerHTML = '';
+        const w = stage.clientWidth;
+        const h = stage.clientHeight;
+        // use a single radius so nodes move in a perfect circle (no oval)
+        // slightly larger radius for more breathing room like the reference
+        const radius = Math.min(w, h) * 0.38;
 
-        const w = stage.clientWidth, h = stage.clientHeight;
-        if (!w || !h) return;
-        cx = w / 2; cy = h / 2;
-        radius = Math.min(w, h) * 0.36;
+        // draw subtle guiding rings in the SVG overlay
+        if (svg) {
+          svg.innerHTML = '';
+          svg.setAttribute('width', String(w));
+          svg.setAttribute('height', String(h));
+          svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+          svg.style.position = 'absolute'; svg.style.left = '0'; svg.style.top = '0'; svg.style.pointerEvents = 'none';
+          const cx = w / 2, cy = h / 2;
+          const rx = radius, ry = Math.round(radius * 0.62);
+          const ns = 'http://www.w3.org/2000/svg';
+          const ring = document.createElementNS(ns, 'ellipse');
+          ring.setAttribute('cx', String(cx)); ring.setAttribute('cy', String(cy));
+          ring.setAttribute('rx', String(rx)); ring.setAttribute('ry', String(ry));
+          ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', 'rgba(95,245,230,0.08)');
+          ring.setAttribute('stroke-width', '2'); ring.setAttribute('stroke-dasharray', '6 18');
+          svg.appendChild(ring);
+          const ring2 = document.createElementNS(ns, 'ellipse');
+          ring2.setAttribute('cx', String(cx)); ring2.setAttribute('cy', String(cy));
+          ring2.setAttribute('rx', String(Math.round(rx * 0.84))); ring2.setAttribute('ry', String(Math.round(ry * 0.84)));
+          ring2.setAttribute('fill', 'none'); ring2.setAttribute('stroke', 'rgba(95,245,230,0.04)');
+          ring2.setAttribute('stroke-width', '1.5'); ring2.setAttribute('stroke-dasharray', '4 20');
+          svg.appendChild(ring2);
+        }
 
-        core.style.left = cx + 'px';
-        core.style.top = cy + 'px';
-        core.style.transform = 'translate(-50%,-50%)';
-        core.style.position = 'absolute';
-
-        const n = SKILLS.length;
-        SKILLS.forEach(([label, desc], i) => {
-          const angle = (-90 + (360 / n) * i) * Math.PI / 180;
-          const x = cx + radius * Math.cos(angle);
-          const y = cy + radius * Math.sin(angle);
-
-          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          line.setAttribute('x1', cx); line.setAttribute('y1', cy);
-          line.setAttribute('x2', x); line.setAttribute('y2', y);
-          line.classList.add('edge');
-          line.dataset.index = i;
-          svg.appendChild(line);
-          lineEls.push(line);
-
+        SKILLS.forEach(({ label, mark, icon, desc }, i) => {
+          const angle = (360 / SKILLS.length) * i - 90;
+          const rad = angle * Math.PI / 180;
           const node = document.createElement('button');
           node.type = 'button';
-          node.className = 'node';
-          node.textContent = label;
+          node.className = 'orbit-card';
+          node.innerHTML = icon
+            ? `<span class="orbit-face"><span class="orbit-logo"><img src="${icon}" alt="" loading="lazy"></span><span class="orbit-name">${label}</span></span>`
+            : `<span class="orbit-face"><span class="orbit-logo orbit-mark">${mark}</span><span class="orbit-name">${label}</span></span>`;
           node.setAttribute('aria-label', `Show ${label} details`);
-          node.style.left = x + 'px';
-          node.style.top = y + 'px';
+          node.style.setProperty('--i', i);
+          node.style.setProperty('--total', SKILLS.length);
+          // compute pure circular tx/ty using a single radius
+          node.style.setProperty('--tx', `${(Math.cos(rad) * radius).toFixed(1)}px`);
+          node.style.setProperty('--ty', `${(Math.sin(rad) * radius).toFixed(1)}px`);
+          node.style.setProperty('--depth', Math.sin(rad).toFixed(3));
+          // explicit stacking so front-most nodes render above others
+          node.style.zIndex = String(200 + Math.round(Math.sin(rad) * 100));
           node.dataset.index = i;
           nodesLayer.appendChild(node);
           nodeEls.push(node);
 
-          node.addEventListener('mouseenter', () => setActive(i));
-          node.addEventListener('mouseleave', clearActive);
+          // draw a small marker on the svg ring at this node position
+          if (svg) {
+            const cx = w / 2, cy = h / 2;
+            const rx = radius, ry = Math.round(radius * 0.62);
+            const mx = Math.round(cx + Math.cos(rad) * rx);
+            const my = Math.round(cy + Math.sin(rad) * ry);
+            const ns = 'http://www.w3.org/2000/svg';
+            const dot = document.createElementNS(ns, 'circle');
+            dot.setAttribute('cx', String(mx)); dot.setAttribute('cy', String(my));
+            dot.setAttribute('r', '3'); dot.setAttribute('fill', 'rgba(95,245,230,0.85)'); dot.setAttribute('opacity', '0.9');
+            svg.appendChild(dot);
+          }
+
+          if (stackMouseEffects) {
+            node.addEventListener('mouseenter', () => setActive(i));
+            node.addEventListener('mouseleave', clearActive);
+          }
+          // keep keyboard focus behaviour for accessibility
           node.addEventListener('focus', () => setActive(i));
           node.addEventListener('blur', clearActive);
           node.addEventListener('click', () => {
@@ -252,50 +289,34 @@
             if (infoV) infoV.textContent = desc;
           });
 
-          if (!reduced) {
-            const dx = x - cx, dy = y - cy;
-            const pulse = document.createElement('div');
-            pulse.className = 'pulse';
-            pulse.style.left = cx + 'px';
-            pulse.style.top = cy + 'px';
-            pulse.style.setProperty('--dx', dx + 'px');
-            pulse.style.setProperty('--dy', dy + 'px');
-            const duration = 2.8 + (i % 5) * 0.45;
-            const delay = (i * 0.55) % 3.2;
-            pulse.style.animationDuration = duration + 's';
-            pulse.style.animationDelay = delay + 's';
-            pulsesLayer.appendChild(pulse);
-            pulseEls.push(pulse);
-          }
         });
       }
 
       function setActive(i) {
         stage.classList.add('has-active');
         nodeEls.forEach((el, idx) => el.classList.toggle('active', idx === i));
-        lineEls.forEach((el, idx) => el.classList.toggle('active', idx === i));
-        if (SKILLS[i]) {
-          if (infoK) infoK.textContent = SKILLS[i][0];
-          if (infoV) infoV.textContent = SKILLS[i][1];
+        const s = SKILLS[i];
+        if (s) {
+          if (infoK) infoK.textContent = s.label;
+          if (infoCategory) infoCategory.textContent = s.category || '';
+          if (infoDesc) infoDesc.textContent = s.desc || '';
+          if (infoRole) infoRole.textContent = s.role || '';
         }
       }
       function clearActive() {
         stage.classList.remove('has-active');
         nodeEls.forEach(el => el.classList.remove('active'));
-        lineEls.forEach(el => el.classList.remove('active'));
       }
 
-      core.addEventListener('mouseenter', () => {
-        stage.classList.remove('has-active');
-        lineEls.forEach(el => { el.style.opacity = '0.7'; });
-      });
-      core.addEventListener('mouseleave', () => {
-        lineEls.forEach(el => { el.style.opacity = ''; });
-      });
+      if (stackMouseEffects) {
+        core.addEventListener('mouseenter', () => {
+          stage.classList.add('tracking');
+        });
+        core.addEventListener('mouseleave', () => stage.classList.remove('tracking'));
+      }
       core.addEventListener('click', () => {
         clearActive();
-        if (infoK) infoK.textContent = 'AI';
-        if (infoV) infoV.textContent = 'The center everything else in this stack is built around.';
+        setActive(0);
       });
 
       let resizeTimer;
@@ -312,6 +333,8 @@
       }
 
       build();
+      // default selected node
+      setTimeout(() => setActive(0), 80);
     }
   }
 })();
